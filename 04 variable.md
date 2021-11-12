@@ -129,7 +129,7 @@ score의 이전 값인 undefined와 80은 어떤 변수도 값으로 갖고 있�
 - 식별자는 특수문자를 제외한 문자, 언더스코어(_), 달러 기호($)로 시작해야 한다. 숫자로 시작하는 것은 허용하지 않는다.
 - 예약어는 식별자로 사용할 수 없다.
 
-| 항목 |  |  | | | |
+| 예약어 |  |  | | | |
 |----|----|----|----|----|----|
 | await | break | case | catch | class | const|
 | continue | debugger | default | delete | do | else |
