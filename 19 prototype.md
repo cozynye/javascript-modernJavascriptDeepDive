@@ -1054,6 +1054,378 @@ constructor 프로퍼티와 생성자 함수 간의 연결이 파괴된다.
 Person.prototype = parent;
 ```
 
+<br>
+
+## 10. instanceof 연산자
+
+instanceof 연산자는 이항 연산자로서 좌변에 객체를 가리키는 식별자, 우변에 생성자 함수를 가리키는 식별자로 받는다
+
+우변의 피연산자가 함수가 아닌 경우 TypeError가 발생
+
+> **객체 instanceof 생성자 함수**
+
+우변의 생성자 함수의 prototype에 바인딩된 객체가 좌변의 객체의 프로토타입 체인 상에 존재하면 true로 평가,
+
+그렇지 않으면 false로 평가된다
+
+```js
+function Person(name){
+    this.name = name;
+}
+
+const me = new Person('Lee');
+
+me instanceof Person // true
+me instanceof Object // true
+```
 
 
-## 10 instanceof 연산자
+
+instaceof 연산자는 생성자 함수의 prototype에 바인딩된 객체가 프로토타입 체인 상에 존재하는지 확인한다.
+
+<br>
+
+## 12. 직접 상속
+
+### Object.create에 의한 직접 상속
+
+Object.create 메서드는 명시적으로 프로토타입을 지정하여 새로운 객체를 생성
+
+Object.create 메서드도 추상 연산 OrdinaryObjectCreate를 호출
+
+---
+
+Object.create 메서드의 첫 번째 매개변수에는 생성할 객체의 프로토타입으로 지정할 객체를 전달.
+
+두 번째 매개변수에는 생성할 객체의 프로퍼티 키와 프로퍼티 디스크립터 객체로 이뤄진 객체를 전달.(생략 가능)
+
+```js
+// 프로토타입이 null인 객체를 생성하고 이 객체는 프로토타입 체인의 종점에 위치한다.
+let obj = Object.create(null);
+Object.getPrototypeOf(obj) === null //true
+
+// Object.prototype을 상속받지 못한다
+obj.toString(); //TypeError: obj.toString is not a function
+
+// obj -> Object.prototype -> null
+// obj = {x:1} 와 동일하다
+obj = Object.create(Object.prototype,{
+    x : {value:1, writable : true, enumerable : true, configurable : true}
+});
+// 위와 동일한 코드
+// obj = Object.create(Object.prototype);
+// obj.x=1;
+
+obj.x // 1
+Object.getPrototypeOf(obj) === Object.prototype // true
+
+const myProto = {x:10};
+// 임의의 객체를 직접 상속
+// obj -> myProto -> Object.prototype -> null
+obj = Object.create(myProto);
+obj.x // 10
+Object.getPrototypeOf(obj) === myProto // true
+
+function Person(name){
+    this.name = name;
+}
+// obj -> Person.prototype -> Object.prototype -> null
+// obj = new Person('Lee')와 동일
+obj = Object.create(Person.prototype);
+obj.name = 'Lee';
+Object.getPrototypeOf(obj) === Person.prototype // true
+```
+
+위처럼 Object.create 메서드는 첫 번째 매개변수에 전달한 객체의 프로토타입 체인에 속하는 객체를 생성
+
+-> 객체를 생성하면서 직접적으로 상속을 구현하는 것이다
+
+이렇게 하면 new 연산자 없이 객체를 생성하면서 프로토타입을 지정하면서 객체를 생성하고 객체 리터럴에 의해
+
+생성된 객체도 상속을 받을 수 있는 장점이 있다.
+
+
+
+### 객체 리터럴 내부에서 \_\_proto__에 의한 직접 상속
+
+객체 리터럴에 의해 객체를 생성하면서 프로토타입을 지정하여 직접 상속받을 수 있다.
+
+```js
+const proto = {x:1};
+
+const obj = {
+    y: 20,
+    
+    // obj --> proto -> Object.prototype -> null
+    __proto__ : proto
+};
+// 위와 동일한 코드
+/* const obj = Object.create(proto,{
+ y : {value : 20, writable: true, enumerable : true, configurable: true}
+});
+*/
+
+Object.getPrototypeOf(obj) === proto // true
+```
+
+
+
+<br>
+
+
+
+## 12. 정적 프로퍼티/메서드
+
+정정 프로퍼티/메서드는 생성자 함수로 인스턴스를 생성하지 않아도 참조/호출할 수 있는 프로퍼티/메서드이다.
+
+```js
+function Person(name){
+    this.name = name;
+}
+
+// 프로토타입 메서드
+Person.prototype.sayHello = function(){
+    console.log(`Hi, my name is ${this.name}`);
+};
+
+// 정적 프로퍼티
+Person.staticProp = 'static prop';
+
+// 정적 메서드
+Person.staticMethod = function(){
+    console.log('static method');
+};
+
+const me = new Person('Lee');
+
+//생성자 함수에 추가한 정적 프로퍼티/메서드는 생성자 함수로 참조/호출한다.
+Person.staticMethod() // static method
+
+// 정적 프로퍼티/메서드는 생성자 함수가 생성한 인스턴스로 참조/호출할 수 없다.
+// 인스턴스로 참조/호출할 수 있는 프로퍼티/메서드는 프로토타입 체인 상 존재해야함
+me.staticMethod(); // TypeError: me.staticMethod is not a function
+```
+
+Person 생성자 함수는 객체이므로 자신의 프로퍼티/메서드 소유 가능
+
+Person 생성자 함수 객체가 소유한 프로퍼티/메서드를 정적 프로퍼티/메서드라한다.
+
+정적 프로퍼티/메서드는 생성자 함수가 생성한 인스턴스로 참조/호출할 수 없다.
+
+<img src=./image/prototype7.png height=500>
+
+생성자 함수가 생성한 인스턴스는 자신의 프로토타입 체인에 속한 객체의 프로퍼티/메서드에 접근할 수 있지만
+
+정적 프로퍼티/메서드는 인스턴스의 프로토타입 체인에 속한 객체의 프로퍼티/메서드가 아니므로 접근 불가능하다.
+
+
+
+<br>
+
+
+
+## 13 프로퍼티 존재 확인
+
+### in 연산자
+
+in 연산자는 객체 내에 특정 프로퍼티가 존재하는지 여부를 확인
+
+> ```js
+> //key : 프로퍼티 키를 나타내는 문자열
+> //object : 객체로 평가되는 표현식
+> key in object
+> ```
+
+```js
+const person = {
+    name : 'Lee',
+    age : 18
+};
+
+'name' in person // true
+'age' in person // true
+'address' in person // false
+
+// 객체가 상속받은 모든 프로토타입의 프로퍼티 확인하므로 주의 필요
+'toString' in person // true
+```
+
+```js
+// ES6 에서 도입된 Reflect.has 메서드는 in 연산자와 동일하게 동작
+const person = {
+    name : 'Lee',
+    age : 18
+};
+
+Reflect.has(person, 'name') // true
+Reflect.has(person, 'toString') // true
+```
+
+
+
+### Object.prototypehasOwnProperty 메서드
+
+Object.prototype.hasOwnProperty 메서드를 사용해도 객체에 특정 프로퍼티 존재하는지 확인 가능
+
+```js
+const person = {
+    name : 'Lee',
+    age : 18
+};
+
+person.hasOwnProperty('name') // true
+
+// 인수로 전달받은 프로퍼티 키가 객체 고유의 프로퍼티 키인 경우만 true 반환 상송받은 프로퍼티 키는 false 반환
+person.hasOwnProperty('toString') // false
+```
+
+
+
+## 14. 프로퍼티 열거
+
+### for ... in 문
+
+객체의 모든 프로퍼티를 순회하며 열거하려면 for...in 문을 사용한다.
+
+> for ( 변수선언문 in 객체){...}
+
+```js
+const person = {
+    name : 'Lee',
+    age : 18
+};
+
+for(let x in person){console.log(x + ' : ' + person[x])}
+// name : Lee
+// age : 18
+```
+
+for ... in 문은 객체의 프로토타입 체인 상에 존재하는 모든 프로토타입의 프로퍼티 중에서 프로퍼티 어트리뷰트 [[Enumerable]]의
+
+값이 true인 프로퍼티를 순회하며 열거한다.
+
+```js
+const sym = Symbol();
+const person = {
+	name: 'Lee',
+    address:'Seoul',
+    __proto__:{age:20},
+    [sym] : 10
+};
+
+for(let x in person){console.log(x + ' : ' + person[x])}
+// name : Lee
+// address : Seoul
+// age : 20
+// 심벌인 키는 열거하지 않는다.
+```
+
+상속받은 프로퍼티를 제외하고 객체 자신의 프로퍼티만 열거하려면 Object.prototype.hasOwnProperty 메서드를 사용하여
+
+자신의 프로퍼티인지 확인해야 한다.
+
+```js
+const person = {
+	name: 'Lee',
+    address:'Seoul',
+    __proto__:{age:20}
+};
+
+for(const key in person){
+    if(!person.hasOwnProperty(key)) continue;
+   console.log(key + ' : ' + person[key]);
+}
+```
+
+for ... in 문은 프로퍼티를 열거할 때 순서를 보장하지 않으므로 주의 해야 한다.
+
+하지만 대부분의 모던 브라우저는 순서를 보장하고 숫자(문자열)인 프로퍼티 키에 대해서는 정렬을 실시한다.
+
+```js
+const obj ={
+    2:2,
+    3:3,
+    1:1,
+    b:'b',
+    a:'a'
+}
+
+for(const key in obj){
+    if(!obj.hasOwnProperty(key)) continue;
+   console.log(key + ' : ' + obj[key]);
+}
+// 1 : 1
+// 2 : 2
+// 3 : 3
+// b : b
+// a : a
+```
+
+배열에는 for ...in 문을 사용하지 말고 일반적인 for문이나 for ...of 문 또는 Array.prototype.forEach 메서드 사용을 권장하고
+
+배열도 객체이므로 프로퍼티와 상속받은 프로퍼티가 포함될 수 있다.
+
+```js
+const arr = [1,2,3];
+arr.x=10;
+
+arr // [1, 2, 3, x: 10]
+for(const i in arr){
+    console.log(i, arr[i])
+}
+// 0 1
+// 1 2
+// 2 3
+// x 10
+
+for(let i = 0; i<arr.length;i++){
+    console.log(arr[i])
+}
+// 1
+// 2
+// 3
+
+arr.forEach(v=> console.log(v))
+// 1
+// 2
+// 3
+
+for(const v of arr){
+    console.log(v);
+}
+// 1
+// 2
+// 3
+```
+
+
+
+### Object.key/values/entreis 메서드
+
+객체 자신의 고유 프로퍼티만 열거하기 위해서는 상속받는 프로퍼티도 열거하는 for ... in 문을 사용하는 것보다는
+
+Object.keys/values/entries 메서드를 사용하는 것을 권장함.
+
+
+
+**Object.keys**메서드는 객체 자신의 열거 가능한 프로퍼티 키를 배열로 반환한다.
+
+**Object.values**메서드는 객체 자신의 열거 가능한 프로퍼티 값을 배열로 반환한다.
+
+**Object.entries**메서드는 객체 자신의 열거가능한 프로퍼티 키와 값의 쌍의 배열을 배열에 담아 반환
+
+```js
+const person = {
+	name: 'Lee',
+    address:'Seoul',
+    __proto__:{age:20}
+};
+Object.keys(person); // ['name', 'address']
+Object.values(person); // ['Lee', 'Seoul']
+Object.entries(person); [['name', 'Lee'],['address', 'Seoul']]
+
+Object.entries(person).forEach(([k,v])=> console.log(k,v))
+// name Lee
+// address Seoul
+```
+
