@@ -52,7 +52,7 @@ const circle = {
 
 
 
-<br>
+<br><br>
 
 ## 2. 상속과 프로토타입
 
@@ -115,7 +115,7 @@ getArea 메서드는 단 하나만 생성되어 프로토타입인 Circle.protot
 >
 > 생성자 함수가 생성할 모든 인스턴스는 별도의 구현 없이 상위 객체인 프로터타입의 자산 사용 가능
 
-<br>
+<br><br>
 
 ## 3. 프로토타입 객체
 
@@ -139,9 +139,9 @@ getArea 메서드는 단 하나만 생성되어 프로토타입인 Circle.protot
 
 생성자 함수에 의해 생성된 객체의 프로토타입은 생성자 함수의 prototype 프로퍼티에 바인딩되어 있는 객체다.
 
-
-
 ---
+
+<br>
 
 ### \_\_proto\_\_ 접근자 프로퍼티
 
@@ -176,9 +176,9 @@ console.log(person);
 // set __proto__: ƒ __proto__()
 ```
 
-
-
 ---
+
+<br>
 
 **\_\_proto\_\_는 접근자 프로퍼티이다**
 
@@ -212,11 +212,9 @@ obj.__proto__ = parent
 obj.x // 1
 ```
 
-
-
-
-
 ---
+
+<br>
 
 **\_\_proto\_\_ 접근자 프로퍼티는 상속을 통해 사용된다**.
 
@@ -240,7 +238,7 @@ person.__proto__ == Object.prototype // true
 
 ---
 
-
+<br>
 
 **\__proto__ 접근자 프로퍼티를 통해 프로토타입에 접근하는 이유**
 
@@ -268,7 +266,7 @@ parent.__proto__ = child // TypeError: Cyclic __proto__ value
 
 ---
 
-
+<br>
 
 **\__proto__ 접근자 프로퍼티를 코드 내에서 직접 사용하는 것은 권장되지 않는다.**
 
@@ -379,6 +377,8 @@ Person.prototype === me.__proto__ // true
 
 
 
+<br>
+
 ### 프로토타입의 constructor 프로퍼티와 생성자 함수
 
 모든 프로토타입은 constructor 프로퍼티를 가지며 prototype 프로퍼티로 자신을 참조하고 있는 생성자 함수를 가리킨다.
@@ -406,7 +406,7 @@ me 객체는 프로토타입인 Person.prototype의 constructor 프로퍼티를 
 
 <br>
 
-
+<br>
 
 ## 4. 리터럴 표기법에 의해 생성된 객체의 생성자 함수와 프로토타입
 
@@ -457,7 +457,7 @@ const regexp = /is/ig;
 
 리터럴 표기법에 의해 생성된 객체도 프로토타입이 존재한다.
 
-하지만 리터럴 표기법에 의해 생서된 객체의 경우 프로토타입의 constructor 프로퍼티가 가리키는 생성자 함수가 반드시
+하지만 리터럴 표기법에 의해 생성된 객체의 경우 프로토타입의 constructor 프로퍼티가 가리키는 생성자 함수가 반드시
 
 객체를 생성한 생성자 함수라고 단정할 수는 없다.
 
@@ -539,7 +539,7 @@ foo.constructor === Function // true
 
 프로토타입은 생성자 함수와 더불어 생성되며 prototype, constructor 프로퍼티에 의해 연결되어 있기 때문
 
--> **프로토타입과 생성자 함수는 단독으로 존재할 수 없고 언제나 쌍으로 존재한다**
+-> **프로토타입과 생성자 함수는 단독으로 존재할 수 없고 언제나 쌍으로 존재한다**.
 
 ---
 
@@ -554,6 +554,8 @@ foo.constructor === Function // true
 즉, 프로토 타입의 constructor 프로퍼티를 통해 연결되어 있는 생성자 함수를 리터럴 표기법으로 생성한 객체를
 
 생성한 생성자 함수로 생각해도 큰 문제는 없다
+
+<br>
 
 <table>
     <th>리터럴 표기법</th>
@@ -586,7 +588,7 @@ foo.constructor === Function // true
 
 <br>
 
-
+<br>
 
 ## 5. 프로토타입의 생성 시점
 
@@ -596,11 +598,15 @@ foo.constructor === Function // true
 
 
 
+<br>
+
 ### 사용자 정의 생성자 함수와 프로토타입 생성 시점
 
 화살표 함수나 메서드 축약 표현으로 정의하지 않고 일반함수(함수 선언문, 함수 표현식)으로 정의한 함수 객체는
 
 new 연산자와 함께 생성자 함수로서 호출할 수 있다.
+
+
 
 **생성자 함수로서 호출할 수 있는 함수(constructor)는 함수 정의가 평가되어 함수 객체를 생성하는 시점에 프로토타입도 더불어 생성**
 
@@ -631,6 +637,8 @@ Person2.prototype // undefined
 
 
 
+<br>
+
 ### 빌트인 생성자 함수와 프로토타입 생성 시점
 
 Object, String, Number, Function, Array, RegExp, Date, Promise 등과 같은 빌트인 생성자 함수도 일반 함수와 같이
@@ -643,11 +651,9 @@ prototype 프로퍼티에 바인딩 된다.
 
 
 
-
-
 <br>
 
-
+<br>
 
 ## 6. 객체 생성 방식과 프로토타입의 결정
 
@@ -675,6 +681,8 @@ prototype 프로퍼티에 바인딩 된다.
 
 
 
+<br>
+
 ### 객체 리터럴에 의해 생성된 객체의 프로토타입
 
 자바스크립트 엔진은 객체 리터럴을 평가하여 객체를 생성할 때 추상 연산 OrdinaryObjectCreate를 호출한다.
@@ -701,6 +709,8 @@ Object.prototype과 생성된 객체 사이에 연결이 만들어 진다.
 obj 객체가 프로토타입인 Object.prototype 객체를 상속 받았기 때문에 Object.prototype 의 프로퍼티, 메서드를 자유롭게 사용 가능하다.
 
 
+
+<br>
 
 ### Object 생성자 함수에 의해 생성된 객체의 프로토타입
 
@@ -738,6 +748,8 @@ obj.hasOwnProperty('x') // true
 프로퍼티를 추가한다는 객체를 생성하고 프로퍼티를 추가하는 방식의 차이가 있다.
 
 
+
+<br>
 
 ### 생성자 함수에 의해 생성된 객체의 프로토타입
 
@@ -788,7 +800,7 @@ person.sayHello(); // Hi! my name is Lee
 
 <br>
 
-
+<br>
 
 ## 7. 프로토타입 체인
 
@@ -804,7 +816,7 @@ person.sayHello(); // Hi! my name is Lee
 
 <br>
 
-
+<br>
 
 ## 8. 오버라이딩과 프로퍼티 섀도잉
 
@@ -873,8 +885,6 @@ me.sayHello(); // Hi! my name is Lee
 
 즉 하위 객체를 통해 프로토타입에 get 액세스는 허용되나 set액세스는 허용되지 않는다.
 
-
-
 -> 프로토타입 프로퍼티를 변경 또는 삭제하려면 하위 객체를 통해 프로토타입 체인으로 접근하는 것이 아니라 프로토타입에 
 
 직접 접근해야 한다
@@ -897,7 +907,7 @@ me.sayHello(); // TypeError:  me.sayHello is not a function
 
 <br>
 
-
+<br>
 
 ## 9. 프로토타입의 교체
 
@@ -908,6 +918,8 @@ me.sayHello(); // TypeError:  me.sayHello is not a function
 상속 관계를 동적으로 변경 가능하다.
 
 
+
+<br>
 
 ### 생성자 함수에 의한 프로토타입 교체
 
@@ -1000,7 +1012,7 @@ me.constructor === Object // false
 
 
 
-
+<br>
 
 ### 인스턴스에 의한 프로토타입의 교체
 
@@ -1054,6 +1066,10 @@ constructor 프로퍼티와 생성자 함수 간의 연결이 파괴된다.
 Person.prototype = parent;
 ```
 
+
+
+<br>
+
 <br>
 
 ## 10. instanceof 연산자
@@ -1082,6 +1098,10 @@ me instanceof Object // true
 
 
 instaceof 연산자는 생성자 함수의 prototype에 바인딩된 객체가 프로토타입 체인 상에 존재하는지 확인한다.
+
+
+
+<br>
 
 <br>
 
@@ -1146,6 +1166,8 @@ Object.getPrototypeOf(obj) === Person.prototype // true
 
 
 
+<br>
+
 ### 객체 리터럴 내부에서 \_\_proto__에 의한 직접 상속
 
 객체 리터럴에 의해 객체를 생성하면서 프로토타입을 지정하여 직접 상속받을 수 있다.
@@ -1172,7 +1194,7 @@ Object.getPrototypeOf(obj) === proto // true
 
 <br>
 
-
+<br>
 
 ## 12. 정적 프로퍼티/메서드
 
@@ -1222,7 +1244,7 @@ Person 생성자 함수 객체가 소유한 프로퍼티/메서드를 정적 프
 
 <br>
 
-
+<br>
 
 ## 13 프로퍼티 존재 확인
 
@@ -1263,6 +1285,8 @@ Reflect.has(person, 'toString') // true
 
 
 
+<br>
+
 ### Object.prototypehasOwnProperty 메서드
 
 Object.prototype.hasOwnProperty 메서드를 사용해도 객체에 특정 프로퍼티 존재하는지 확인 가능
@@ -1280,6 +1304,10 @@ person.hasOwnProperty('toString') // false
 ```
 
 
+
+<br>
+
+<br>
 
 ## 14. 프로퍼티 열거
 
@@ -1400,13 +1428,15 @@ for(const v of arr){
 
 
 
-### Object.key/values/entreis 메서드
+<br>
+
+### Object.key/values/entries메서드
 
 객체 자신의 고유 프로퍼티만 열거하기 위해서는 상속받는 프로퍼티도 열거하는 for ... in 문을 사용하는 것보다는
 
 Object.keys/values/entries 메서드를 사용하는 것을 권장함.
 
-
+->
 
 **Object.keys**메서드는 객체 자신의 열거 가능한 프로퍼티 키를 배열로 반환한다.
 
